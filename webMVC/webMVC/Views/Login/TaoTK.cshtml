@@ -1,0 +1,210 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <style>
+        #login{
+            position: fixed;
+            padding: 5px;
+            left: 0px;
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            z-index:99;
+           
+        }
+        #login div {
+             margin-top:13%;
+            text-align:center;
+        }
+    </style>
+    <title>Tạo Tài Khoản</title>
+    <link href="~/Content/css/styles.css" rel="stylesheet" />
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js" crossorigin="anonymous"></script>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body style="background-color:#2e6da4">
+    <div id="login">
+        <div class="card-body">
+            <img src="~/Content/Img/5.gif" />
+        </div>
+        
+    </div>
+    <div id="layoutAuthentication">
+        <div id="layoutAuthentication_content">
+            <main>
+                <div class="container">
+                    <div class="row justify-content-center">
+                        <div class="col-lg-7">
+                            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                                <div class="card-header"><h3 class="text-center font-weight-light my-4">Tạo Tài Khoản</h3></div>
+                                <div class="card-body" id="DKtk" >
+                                    <div class="form-row">
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="inputFirstName">Tên Đăng Nhập</label>
+                                                <input class="form-control py-4" id="inputFirstName" type="text" placeholder="Nhập tên đăng nhập................." />
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="small mb-1" for="inputEmailAddress">Gmail</label>
+
+                                        <input class="form-control py-4" id="inputEmailAddress" type="email" aria-describedby="emailHelp" placeholder="Enter Gmail address" />
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="mk1">Mật Khẩu</label>
+                                                <input class="form-control py-4" id="mk1" type="password" placeholder="Enter password" />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label class="small mb-1" for="mk">Nhập Lại Mật Khẩu</label>
+                                                <input class="form-control py-4" id="mk" type="password" placeholder="Confirm password" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group mt-4 mb-0"><button id="taotk" class="btn btn-primary btn-block">Tạo</button></div>
+
+                                </div>
+                                <div class="card-body form-group " id="FormXN" style="text-align:center">
+                                    <div class="card-body row">
+                                        <label class="col-2">Mã Xác Nhận</label>
+                                        <input class=" col-8 form-control" id="maXN" type="text" placeholder="Nhập Mã Xác Nhận ................." />
+                                    </div>
+                                    <button id="btnXn" class="btn btn-primary">Xác Nhận </button>
+                                    <button id="btnGui" class="btn btn-primary"> Gửi Lại Mã</button>
+                                </div>
+                                <div class="card-footer text-center">
+                                    <div class="small"><a href="Login/login">Have an account? Go to login</a></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </main>
+        </div>
+        <div id="layoutAuthentication_footer">
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2020</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="~/Content/js/scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js" crossorigin="anonymous"></script>
+    <script src="/assets/demo/datatables-demo.js"></script>
+    <script>
+        $('#FormXN').hide();
+        $('#login').hide();
+        $('#taotk').click(function () {
+            var mk = $('#mk').val();
+            var mk1 = $('#mk1').val();
+            var use = $('#inputFirstName').val();
+            var adress = $('#inputEmailAddress').val();
+            if (mk == mk1 && use.length > 0 && adress.length > 0) {
+                $('#login').show();
+                $.ajax({
+                    type: 'post',
+                    data: { USE: use, Adress: adress, Pass: mk },
+                    url: '/Login/Create',
+                    success: function (data) {
+                        if (data.status == true) {
+                            $('#login').hide();
+                            $('#DKtk').hide();
+                            $('#FormXN').show();
+                        }
+                        else {
+                            $('#login').hide();
+                            alert(data.status);
+
+                        }
+
+                    }
+                });
+               
+            }
+            else if (mk != mk1) {
+                alert("Mật khẩu mới và mật khẩu nhập vào phải trùng khớp nhau");
+            }
+            else {
+                alert("Vui Lòng Điền Đầy Đủ Thông Tin");
+            }
+
+        });
+
+        $('#btnXn').click(function () {
+            var adress = $('#maXN').val();
+           
+            if (adress.length > 0) {
+                $('#login').show()
+                $.ajax({
+                    type: 'post',
+                    data: {Adress: adress},
+                    url: '/Login/KiemTra',
+                    success: function (data) {
+                        if (data.status == true) {
+                            $('#login').hide();
+                            alert("Thành Công")
+                            window.location = "/Home/Index";
+                        }
+                        else {
+                            $('#login').hide();
+                            alert("Mã Bạn Nhập Không Đúng")
+                        }
+                    }
+                });
+             
+            }
+           
+            else {
+                alert("Vui Lòng Nhập Mã Xác Nhận");
+            }
+
+        });
+
+        $('#btnGui').click(function () {
+            $('#login').show();
+            $.ajax({
+                    type: 'post',
+                url: '/Login/SendMa',
+                data: {mess:'Tạo Tài Khoản',mess1:"Mã Xác Nhận Của Bạn Là "},
+                    success: function (data) { 
+                        $('#login').hide();
+                    }
+            });
+          
+        });
+
+
+    </script>
+
+
+
+</body>
+</html>

@@ -1,0 +1,71 @@
+﻿@model webMVC.Models.TaiKhoan
+@{
+    ViewBag.Title = "TaiKhoan";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@section scripts{
+    <script>
+        $('#btndoi').click(function () {
+            var mk = $('#mk').val();
+            var mk1 = $('#mk1').val();
+            if (mk == mk1) {
+                $.ajax({
+                    type: 'post',
+                    data: { mk: mk },
+                    url: '/Login/Doimk',
+                    success: function (data) {
+                        if (data.status == true) {
+                            window.location = "/Login/Login";
+                        }
+                        else {
+                            alert("vui lòng kiểm tra lại")
+                        }
+                        
+                    }
+                }); 
+            }
+            else {
+                alert("Mật khẩu mới và mật khẩu nhập vào phải trùng khớp nhau");
+            }
+
+        });
+
+
+    </script>
+    }
+    <div class="container-fluid ">
+        <div class="col-8 container">
+            <div class="card small mb-4 form-group ">
+                <div class="card-footer btn-primary d-flex align-items-center justify-content-between">
+                    <h4 class=" text-white">Thông Tin Tài Khoản</h4>
+                </div>
+                <div class="form-group">
+                    <div class="card-body">
+                        <label>Tên đăng nhập</label>
+                        <input disabled="disabled" type="text" class="form-control col-12" value="@Model.TenDangNhap">
+                    </div>
+                    <div class="card-body">
+                        <label> Mật khẩu</label>
+                        <input disabled="disabled" type="password" class="form-control col-12" value="@Model.MatKhau">
+                    </div>
+                    
+                    <div class="card-body">
+                        <label>Mật khẩu Mới </label>
+                        <input type="password" class="form-control col-12" id="mk">
+                    </div>
+                    <div class="card-body">
+                        <label>Nhâp Lại Mật khẩu</label>
+                        <input type="password" class="form-control col-12" id="mk1">
+                    </div>
+                    <div class="card-body">
+                        <button id="btndoi" class="btn card-footer btn-primary d-flex align-items-center justify-content-between">Đổi</button>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+

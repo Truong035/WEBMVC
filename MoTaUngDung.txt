@@ -1,0 +1,4 @@
+Tạo Tài Khoản 
+Vô đăng kí nhập gmail sau đó phần mềm sẽ gửi ứng mã xác nhận về gmail vừa nhập nếu gmail đo đã đk 
+tài khoản rồi thif thông báo cho người dùng gmail này đã tồn tại sau khi gửi mã xác nhận thành công thì lấy mã xác nhận
+đó nhập vô phần mềm vậy là đăng kí thành công Sau đó sử dụng chương chình bình thương (Qúa trình gửi Gmại có thể hươi lâu tâm 15 giây)

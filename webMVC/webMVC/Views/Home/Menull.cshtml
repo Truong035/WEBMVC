@@ -1,0 +1,33 @@
+﻿@model IEnumerable<webMVC.Models.MonHoc>
+
+<div id="layoutSidenav_nav">
+    <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+        <div class="sb-sidenav-menu sb-sidenav-footer">
+            <div class="nav">
+                <div class="sb-sidenav-menu-heading">Danh Mục</div>
+                @foreach (var item in Model)
+                {
+                    <a class="nav-link" href="/Home/Index/@item.MaMon">
+                        <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                        @item.TenMon
+                    </a>
+                }
+                <div class=" dropdown-divider"></div>
+                <div class="sb-sidenav-menu-heading">Đề Thi</div>
+                <a class="nav-link" href="/Home/TaoDe">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                   Tạo Đề Thi
+                </a>
+                <a class="nav-link" href="/Home/DSDeOn">
+                    <div class="sb-nav-link-icon"><i class="fas fa-tachometer-alt"></i></div>
+                   Danh Sách Đề Thi
+                </a>
+            </div>
+        </div>
+        <div class="sb-sidenav-footer">
+            <div class="small"></div>
+            Web MVC
+        </div>
+    </nav>
+</div>
+

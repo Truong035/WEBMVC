@@ -1,0 +1,114 @@
+﻿@model webMVC.Models.KetQuaThi
+@{
+    ViewBag.Title = "DiemSo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="container">
+    <div class="card-body card ">
+        <div class="card-body"> Mã đề : @Model.De_Thi.MaDeThi</div>
+        <div class="card-body"> Danh mục : @Model.De_Thi.Bo_De.MonHoc.TenMon</div>
+        <div class="card-body"> Số câu đúng : @Model.SoCauDung</div>
+        <div class="card-body"> Số câu sai : @Model.SoCauSai</div>
+        <div class="card-body">  Tên : @Model.De_Thi.TaiKhoan.TenDangNhap </div>
+        <div class="dropdown-divider"></div>
+        <div class="card-body">  Điểm số : @Model.DiemSo</div>
+        @{
+            int i = 0;
+
+            foreach (var item in Model.De_Thi.CauHoiDeThis)
+            {
+
+                <div class="form-group">
+                    <h5 style="width:1000px;"> Câu @(i=i+1) : @item.Kho_CauHoi.NoiDung </h5>
+
+                    @{
+                        try
+                        {
+                            if (item.Kho_CauHoi.HinhAnh.Length > 0)
+                            {
+                                <div class="card-body ">
+                                    <img class=" center-block" style="margin-left:200px" src="@item.Kho_CauHoi.HinhAnh"
+                                         alt="anh viet nam anh 1 " width="200px" height="200px" />
+                                </div>
+
+                            }
+
+                        }
+                        catch { }
+
+                    }
+
+                </div>
+                foreach (var item1 in item.Kho_CauHoi.Dap_AN)
+                {
+                    <div class="form-group">
+                        @try
+                        {
+                            if (item1.HinhAnh.Length > 0)
+                            {
+                                <img class=" center-block" style="margin-left:80px" src="@item1.HinhAnh"
+                                     alt="anh viet nam anh 1" width="150px" />
+
+                            }
+                        }
+                        catch { }
+
+
+                        @{
+                            if (Model.De_Thi.Da_SVLuaChon.ToList().Exists(x => x.Ma_DAN == item1.MA_DAN && item1.TrangThai == true))
+                            {
+                                <div class="custom-control custom-radio" style="background-color:lightgreen">
+                                    <input class="custom-control-inline form-check" id="@item1.MA_DAN" name="@item1.Ma_CauHoi" type="radio" checked="checked" />
+                                    <label class="custom-control-inline" style="width:820px " for="@item1.MA_DAN">
+                                        @item1.NoiDung
+                                    </label>
+                                    <i class="bi bi-check2"></i>
+                                </div>
+
+
+                            }
+                            else if (Model.De_Thi.Da_SVLuaChon.ToList().Exists(x => x.Ma_DAN == item1.MA_DAN))
+                            {
+                                <div class="custom-control custom-radio" style="background-color:red">
+                                    <input class="custom-control-inline form-check" id="@item1.MA_DAN" name="@item1.Ma_CauHoi" type="radio" checked="checked" />
+                                    <label class="custom-control-inline" style="width:820px" for="@item1.MA_DAN">
+                                        @item1.NoiDung
+                                    </label>
+                                    <i class="bi bi-x-circle"></i>
+                                </div>
+                            }
+                            else if (item1.TrangThai == true)
+                            {
+                                <div class="custom-control custom-radio" style="background-color:lightgreen">
+                                    <input class="custom-control-inline form-check" disabled id="@item1.MA_DAN" name="@item1.Ma_CauHoi" type="radio" />
+                                    <label class="custom-control-inline" style="width:670px" for="@item1.MA_DAN">
+                                        @item1.NoiDung
+                                    </label>
+
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="custom-control custom-radio">
+                                    <input class="custom-control-inline form-check" disabled rel="tooltip" id="@item1.MA_DAN" name="@item1.Ma_CauHoi" type="radio" />
+                                    <label class="custom-control-inline" style="width:670px" for="@item1.MA_DAN">
+                                        @item1.NoiDung
+                                    </label>
+
+                                </div>
+                            }
+
+                        }
+                    </div>
+
+                }
+
+            }
+        }
+    </div>
+
+</div>
+                        
+

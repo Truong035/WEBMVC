@@ -1,0 +1,212 @@
+﻿@model IEnumerable<webMVC.Models.Bo_De>
+@{
+    ViewBag.Title = "Home Page";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var Monhoc = (webMVC.Models.MonHoc)ViewBag.danhmuc;
+}
+@section scripts{
+    <script>
+        var ma = $('#ma').val();
+        function DowloadFile(ID) {
+            $.ajax({
+                type: 'post',
+                data: { ma: ID },
+                url: '/Home/Dowload',
+                success: function (data) {
+                    window.location = data.link;
+                }
+            });
+        }
+        $('#NKT').change(function () {
+            var date = new Date($('#NBD').val());
+            var date2 = new Date($('#NKT').val());
+            if (date < date2) {
+                $.ajax({
+                    type: 'get',
+                    data: { NBD: $('#NBD').val(), NKT: $('#NKT').val(), mamon: ma },
+                    url: '/Home/Timde',
+                    success: function (data) {
+                        LoadDe(data)
+                    }
+
+                });
+            }
+          
+        });
+
+        $('#NBD').change(function () {
+            var date = new Date($('#NBD').val());
+            var date2 = new Date($('#NKT').val());
+            if (date <= date2) {
+                $.ajax({
+                    type: 'get',
+                    data: { NBD: $('#NBD').val(), NKT: $('#NKT').val(), mamon: ma },
+                    url: '/Home/Timde',
+                    success: function (data) {
+                        LoadDe(data)
+                    }
+
+                });
+            }     
+        });
+
+        $('#txtTimkiem').change(function () {
+            var tim = $('#txtTimkiem').val();
+        
+                $.ajax({
+                    type: 'get',
+                    data: { ND: tim , mamon: ma },
+                    url: '/Home/TimKiem',
+                    success: function (data) {
+                        LoadDe(data)
+                    }
+
+                });
+            
+        });
+        $('#txtTimkiem').change(function () {
+            var tim = $('#txtTimkiem').val();
+
+            $.ajax({
+                type: 'get',
+                data: { ND: tim, mamon: ma },
+                url: '/Home/TimKiem',
+                success: function (data) {
+                    LoadDe(data)
+                }
+
+            });
+
+        });
+        $('#txthot').change(function () {
+            $.ajax({
+                type: 'get',
+                data: { mamon: ma },
+                url: '/Home/Hot',
+                success: function (data) {
+                    LoadDe(data)
+                }
+
+            });
+
+        });
+        $('#txtthinhhanh').change(function () {
+        
+            $.ajax({
+                type: 'get',
+                data: { mamon: ma },
+                url: '/Home/Thinhhanh',
+                success: function (data) {
+                    LoadDe(data)
+                }
+
+            });
+
+        });
+
+
+
+        function LoadDe(data) {
+            $('#bode').empty();
+            $.each(data.dethi, function (k, v) {
+                var let = ' <div class="col-md-4 container">';
+                let += ' <div class="card small  mb-4">';
+                let += ' <div class="card-footer btn-primary d-flex align-items-center justify-content-between">';
+
+                let += '<h4 class=" text-white">' + v.NoiDung + '</h4 >  </div>';
+
+                let += '<div class="card-body"> Thời Gian:' + v.ThoiGianThi + 'Phút </div >';
+                let+= '<div class="card-body">' + v.TenMon + '</div>';
+                let += '<div class="card-body">';
+                let += '<div class="row">';
+                let += '<div class="col-7">';
+                let += 'Người tạo :' + v.TenDangNhap +'</div>';
+
+                let += v.NgayTao +'</div>  </div>';
+
+
+                                let+= '<div class="card-body">Lượt thi  :'+ v.Luuothi +'</div>'
+                   let+= '<div class="card-body" > Lượt dowload:' +v.LuotTai  + '</div >';
+
+
+                let += '<div class="card-body row">';
+                let += ' <div class="col-10">';
+                let += '<a class="btn bg-danger col-3" href="/ThiThu/' + v.Ma_BoDe + '"> Bat Dau </a>';
+                let += '</div>';
+                let += '<a href="' + v.LinkTai + '" download="" class="bi bi-download" style="font-size: 2rem; color: cornflowerblue"> </a>';
+                let +=  '</div>'
+                
+                let += '</div>';
+                let += '</div >';
+
+                $('#bode').append(let);
+            });
+        }
+    </script>
+}
+
+<div  id="timKiem" class=" container-fluid">
+
+    <h2 class="mt-sm-0">@Monhoc.TenMon</h2>
+    <input id="ma" hidden="hidden" value="@Monhoc.MaMon" />
+    
+    <div class=" mb-3 container form-group row col-12 ">
+        <div class="col-6 row">
+            <label>Từ ngày</label>
+            <input class="form-control col-4" type="date" id="NBD" data-date-format />
+            <label>Đến ngày</label>
+            <input class="form-control col-4" type="date" id="NKT" data-date-format />
+        </div>
+        
+        <input class="form-control col-3" type="text" placeholder="Tìm Kiếm..............." id="txtTimkiem" />
+        <div class="col-3">
+            <input type="radio" id="txtthinhhanh" name="check" class="col-1" />
+            <label>  Nỗi bật  </label>
+            <input type="radio" id="txthot" name="check" class="col-1" />
+            <label> Mới nhất </label>
+        </div>
+        
+    </div>
+    <div class="dropdown-divider"></div>
+    <div class=" mb-3">
+        <div class="card-body">
+            <div class="container-fluid">
+                <div id="bode" class="row">
+                    @foreach (var item in Model)
+                    {
+                        <div class="col-md-4 container">
+                            <div class="card small   mb-4">
+                                <div class="card-footer btn-primary d-flex align-items-center justify-content-between">
+                                    <h4 class=" text-white">@item.NoiDung</h4>
+                                </div>
+                                <div class="card-body"> Thời Gian : @item.ThoiGianThi Phút </div>
+                                <div class="card-body">  @item.MonHoc.TenMon </div>
+                                <div class="card-body">
+                                    <div class="row">
+                                        <div class="col-7">
+                                            Người tạo : @item.TaiKhoan.TenDangNhap
+                                        </div>
+                                        @item.NgayTao
+                                    </div>
+
+                                </div>
+                                <div class="card-body">Lượt thi  : @item.Luuothi </div>
+                                <div class="card-body">Lượt dowload : @item.LuotTai  </div>
+
+
+                                <div class="card-body row">
+                                    <div class="col-10">
+                                        <a class="btn bg-danger col-3" href="/ThiThu/@item.Ma_BoDe"> Bắt đầu </a>
+                                    </div>
+                                    <a href="@item.LinkTai" download="" class="bi bi-download" style="font-size: 2rem; color: cornflowerblue"> </a>
+                                </div>
+
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,181 @@
+﻿
+@{
+    ViewBag.Title = "Loald";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    webMVC.Models.De_Thi Dethi = (webMVC.Models.De_Thi)ViewBag.DeThi;
+}
+<div class="card mb-4">
+    <div class="card-header">
+        <span>Đề Thi Trắc Nghiệm</span>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="col-md-9">
+        <div class=" mb-0">
+            @{
+                int i = 0;
+                foreach (var item in Dethi.CauHoiDeThis)
+                {
+
+                    <div class="form-group">
+                        <h5 style="width:710px;"> Câu @(i=i+1) : @item.Kho_CauHoi.NoiDung </h5>
+
+                        @{
+                            try
+                            {
+                                if (item.Kho_CauHoi.HinhAnh.Length > 0)
+                                {
+                                    <div class="card-body ">
+                                        <img class=" center-block" style="margin-left:200px" src="@item.Kho_CauHoi.HinhAnh"
+                                             alt="anh viet nam anh 1 " width="200px" height="200px" />
+                                    </div>
+
+                                }
+
+                            }
+                            catch { }
+
+                        }
+                    </div>
+                    foreach (var item1 in item.Kho_CauHoi.Dap_AN)
+                    {
+                        <div class="form-group">
+                            @try
+                            {
+                                if (item1.HinhAnh.Length > 0)
+                                {
+                                    <img class=" center-block" style="margin-left:80px" src="@item1.HinhAnh"
+                                         alt="anh viet nam anh 1" width="150px" />
+
+                                }
+                            }
+                            catch { }
+
+                            <div class="custom-control custom-radio">
+                                @{
+                                    if (item1.TrangThai == true)
+                                    {
+                                        <input class="custom-control-inline form-check" id="@item1.MA_DAN" name="@item1.Ma_CauHoi" checked="checked" type="radio" onclick="changeText(this.id)" />
+                                        <label class="custom-control-inline" style="width:700px" for="@item1.MA_DAN">
+                                            @item1.NoiDung
+                                        </label>
+                                    }
+                                    else
+                                    {
+                                        <input class="custom-control-inline form-check" id="@item1.MA_DAN" name="@item1.Ma_CauHoi" type="radio" onclick="changeText(this.id)" />
+                                        <label class="custom-control-inline" style="width:700px" for="@item1.MA_DAN">
+                                            @item1.NoiDung
+                                        </label>
+                                    }
+
+                                }
+                            </div>
+                        </div>
+
+                    }
+
+
+
+                }
+
+            }
+
+        </div>
+    </div>
+    <div class="col-4">
+        <div id="DongHo">
+            <div class="card-footer btn-primary d-flex align-items-center justify-content-between">
+                <h4 class=" text-white">Thông tin đề </h4>
+            </div>
+            <div class="card-body card small">
+                <input id="TxtThoiGian" hidden="hidden" value="@ViewBag.GioThi" />
+                <input id="TxtMaDe" hidden="hidden" value="@Dethi.MaDeThi" />
+
+                <div class="card-body">
+                    Tên :@Dethi.TaiKhoan.TenDangNhap
+
+                </div>
+                <div class="card-body">
+                    Mã đề : @Dethi.MaDeThi;
+
+                </div>
+                <div class="card-body">
+                    Tên : @Dethi.Bo_De.NoiDung;
+
+                </div>
+                <div class="card-body">
+                    Danh mục : @Dethi.Bo_De.MonHoc.TenMon;
+
+                </div>
+                <div class="card-body">
+                    <span id="demo">Đồng Hồ</span>
+                </div>
+                <div class="card-body ">
+                    <input id="bntNopBai" class="bg-success btn" type="submit" value="Nộp Bài" />
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        $("body").toggleClass("sb-sidenav-toggled");
+
+
+        var madethi = $('#TxtMaDe').val();
+        function changeText(ID) {
+            $.ajax({
+                type: 'GET',
+                url: '/LuaChon/' + ID,
+                data: { madethi },
+                success: function (KetQua) {
+                }
+            });
+
+        };
+
+        $('#bntNopBai').click(function () {
+            window.location = "/Home/DiemSo/" + madethi;
+
+        });
+
+        // Thiết lập thời gian đích mà ta sẽ đếm
+        var tg = $('#TxtThoiGian').val();
+        var countDownDate = new Date(tg).getTime();
+        // cập nhập thời gian sau mỗi 1 giây
+
+        var x = setInterval(function () {
+            // Lấy thời gian hiện tại
+
+
+            var now = new Date().getTime();
+
+            // Lấy số thời gian chênh lệch
+            var distance = countDownDate - now;
+
+            // Tính toán số ngày, giờ, phút, giây từ thời gian chênh lệch
+            var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // HIển thị chuỗi thời gian trong thẻ p
+            if (hours > 0) {
+                document.getElementById("demo").innerHTML = "Thời Gian Còn Lại  " + hours + " : "
+                    + minutes + " : " + seconds + " Phút ";
+            }
+            else {
+                document.getElementById("demo").innerHTML = "Thời Gian Còn Lại  "
+                    + minutes + " : " + seconds + " Phút ";
+            }
+            // Nếu thời gian kết thúc, hiển thị chuỗi thông báo
+            if (distance < 0) {
+                alert("Đã Hết Giờ Làm Bài")
+                window.location = "/Home/DiemSo/" + madethi;
+                clearInterval(x);
+            }
+        }, 1000);
+    </script>
+}
